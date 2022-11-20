@@ -1,4 +1,4 @@
-import {describe, expect, test} from '@jest/globals';
+import {describe, expect, it} from '@jest/globals';
 import PriorityQ from "../queue/priority-q";
 
 describe("Priority Queue", function () {

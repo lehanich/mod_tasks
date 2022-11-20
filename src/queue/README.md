@@ -19,7 +19,7 @@ Scheduler.init({
 
 ## Расширение
 
-Возможно создать свою реализацию очереди (вместо PriorityQ и StandartQ). Она должна реализовывать интерфейс StrategyAdapter. 
+Возможно создать свою реализацию очереди (вместо PriorityQ и StandartQ). Она должна реализовывать интерфейс StrategyAdapter. Элемент очереди - кортеж, который описывается типом WorkerContainer - [приоритет, задача]. Приоритет: "low" | "normal"  |"height", задача: any
 
 ### insert(value: any, priority: Priority): void;
 

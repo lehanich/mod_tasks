@@ -23,13 +23,14 @@ describe("Generator forEach", function () {
         {
           priority: 'low',
           iterable: new Array(1000),
-          task: () => { 
-            console.log("start foreach")
+          task: () => {
+            total++
+            // console.log("start foreach")
 
-            // for(let i=0; i<10;i++){
-              console.log(1, total++)
-              // setTimeout(() => console.log(i++), 1000)
-            // }
+            // // for(let i=0; i<10;i++){
+            //   console.log(1, total++)
+            //   // setTimeout(() => console.log(i++), 1000)
+            // // }
           }
         },
         new TaskIter()
@@ -45,12 +46,13 @@ describe("Generator forEach", function () {
         priority: 'normal',
         iterable: new Array(10),
         task: () => {
-          console.log("start foreach")
+          total++
+          // console.log("start foreach")
 
-          // for(let i=0; i<10;i++){
-            console.log(2, total++)
-            // setTimeout(() => console.log(i++), 1000)
-          // }
+          // // for(let i=0; i<10;i++){
+          //   console.log(2, total++)
+          //   // setTimeout(() => console.log(i++), 1000)
+          // // }
         }
       },  new TaskIter())
     );
@@ -64,12 +66,13 @@ describe("Generator forEach", function () {
         priority: 'height',
         iterable: new Array(10),
         task: () => {
-          console.log("start foreach")
+          total++
+          // console.log("start foreach")
 
-          // for(let i=0; i<10;i++){
-            console.log(3, total++)
-            // setTimeout(() => console.log(i++), 1000)
-          // }
+          // // for(let i=0; i<10;i++){
+          //   console.log(3, total++)
+          //   // setTimeout(() => console.log(i++), 1000)
+          // // }
         }
       }, new TaskIter())
     );

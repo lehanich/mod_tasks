@@ -1,10 +1,10 @@
-import { Priority, StrategyAdapter } from "../interface";
-
-type I = [Priority, any];
+import { Priority,
+  StrategyAdapter,
+  WorkerContainer } from "../interface";
 
 export default class PriorityQ<T> implements StrategyAdapter {
   #maxSize: number = 100;
-  #queueArray: I[] = new Array(100);
+  #queueArray: WorkerContainer[] = new Array(100);
   #length: number = 0;
 
   constructor(size: number) {
@@ -15,7 +15,7 @@ export default class PriorityQ<T> implements StrategyAdapter {
 
   insert(value: any, priority: Priority): void {
     let j: number;
-    let item: I = [priority, value];
+    let item: WorkerContainer = [priority, value];
 
     if (this.#length ===0) {
       this.#queueArray[0] = item;

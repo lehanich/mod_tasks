@@ -23,7 +23,7 @@ const task1 = addTask(
         console.log("start foreach")
 
         // for(let i=0; i<10;i++){
-          console.log(1, test++)
+        console.log(1, test++)
           // setTimeout(() => console.log(i++), 1000)
         // }
       }
@@ -32,7 +32,7 @@ const task1 = addTask(
   )
 );
 
-task1.then((result) => {
+task1.then(() => {
   console.log(2);
 });
 
@@ -44,14 +44,14 @@ const task2 = addTask(
       console.log("start foreach")
 
       // for(let i=0; i<10;i++){
-        console.log(2, test++)
+      console.log(2, test++)
         // setTimeout(() => console.log(i++), 1000)
       // }
     }
   },  new TaskPromise())
 );
 
-task2.then((result) => {
+task2.then(() => {
   console.log(22);
 });
 
@@ -63,13 +63,13 @@ const task3 = addTask(
       console.log("start foreach")
 
       // for(let i=0; i<10;i++){
-        console.log(3, test++)
+      console.log(3, test++)
         // setTimeout(() => console.log(i++), 1000)
       // }
     }
   }, new TaskPromise())
 );
 
-task3.then((result) => {
+task3.then(() => {
   console.log(33);
 });

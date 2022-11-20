@@ -1,4 +1,4 @@
-import Scheduler from "scheduler";
+import Scheduler from "./scheduler";
 
 export type Priority = "low" | "normal"  |"height";
 export type Worker = any;
