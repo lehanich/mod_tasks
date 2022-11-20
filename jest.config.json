@@ -1,6 +1,6 @@
 {
   "verbose": true,
-  "preset": "ts-jest",
+  "preset": "ts-jest/presets/js-with-ts",
   "transform": {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
@@ -9,5 +9,6 @@
   "moduleNameMapper": {
     "^variables$": "variables/dist/cjs",
     "^[NAME OF MODULE YOU WANT TO IMPORT]$": "[NAME OF MODULE YOU WANT TO IMPORT]/dist/cjs"
-  }
+  },
+  "transformIgnorePatterns": ["<rootDir>/node_modules/"]
 }
