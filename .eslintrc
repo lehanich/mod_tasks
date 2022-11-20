@@ -1,0 +1,71 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "eslint:recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true,
+            "tsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "semi": 2,
+        "indent": ["error", 2,
+            {
+                "SwitchCase": 1,
+                "VariableDeclarator": 2,
+                "outerIIFEBody": "off",
+                "MemberExpression": 1,
+                "offsetTernaryExpressions": true,
+                "flatTernaryExpressions": false,
+                "ObjectExpression": "first",
+                "ArrayExpression": "first",
+                "FunctionDeclaration": {"body": 1, "parameters": 1},
+                "CallExpression": {"arguments": "first"},
+                "ImportDeclaration": "first",
+                "ignoredNodes": ["CallExpression > FunctionExpression.callee > BlockStatement.body"]
+            }],
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error"]
+    },
+    "settings": {
+        "propWrapperFunctions": [
+            // The names of any function used to wrap propTypes, e.g. `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
+            "forbidExtraProps",
+            {"property": "freeze", "object": "Object"},
+            {"property": "myFavoriteWrapper"},
+            // for rules that check exact prop wrappers
+            {"property": "forbidExtraProps", "exact": true}
+        ],
+        "componentWrapperFunctions": [
+            // The name of any function used to wrap components, e.g. Mobx `observer` function. If this isn't set, components wrapped by these functions will be skipped.
+            "observer", // `property`
+            {"property": "styled"}, // `object` is optional
+            {"property": "observer", "object": "Mobx"},
+            {"property": "observer", "object": "<pragma>"} // sets `object` to whatever value `settings.react.pragma` is set to
+        ],
+        "formComponents": [
+          // Components used as alternatives to <form> for forms, eg. <Form endpoint={ url } />
+          "CustomForm",
+          {"name": "Form", "formAttribute": "endpoint"}
+        ],
+        "linkComponents": [
+          // Components used as alternatives to <a> for linking, eg. <Link to={ url } />
+          "Hyperlink",
+          {"name": "Link", "linkAttribute": "to"}
+        ]
+      }
+}
