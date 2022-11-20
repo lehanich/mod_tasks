@@ -20,12 +20,8 @@ const task1 = addTask(
       priority: 'height',
       iterable: new Array(10),
       task: () => { 
-        console.log("start foreach")
-
-        // for(let i=0; i<10;i++){
+        console.log("start task 1")
         console.log(1, test++)
-          // setTimeout(() => console.log(i++), 1000)
-        // }
       }
     },
     new TaskPromise()
@@ -41,12 +37,8 @@ const task2 = addTask(
     priority: 'low',
     iterable: new Array(10),
     task: () => {
-      console.log("start foreach")
-
-      // for(let i=0; i<10;i++){
+      console.log("start task 2")
       console.log(2, test++)
-        // setTimeout(() => console.log(i++), 1000)
-      // }
     }
   },  new TaskPromise())
 );
@@ -60,12 +52,8 @@ const task3 = addTask(
     priority: 'normal',
     iterable: new Array(10),
     task: () => { 
-      console.log("start foreach")
-
-      // for(let i=0; i<10;i++){
+      console.log("start task 3")
       console.log(3, test++)
-        // setTimeout(() => console.log(i++), 1000)
-      // }
     }
   }, new TaskPromise())
 );
