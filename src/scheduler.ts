@@ -125,7 +125,9 @@ export default class Scheduler<T> {
 
   *executeIter(): Generator {
     let now = new Date().getTime();
-    let status: any
+    let status: any;
+    let getState: Promise<T>;
+    let worker: any;
 
     while (Scheduler.#instance!.workers!.length > 0) {
       if (new Date().getTime() > now + this.#timeout) {
@@ -133,7 +135,11 @@ export default class Scheduler<T> {
           now = new Date().getTime();
 
           for (let i=0; i < Scheduler.#instance!.workers!.length; i++) {
-            let worker: any;
+            Promise.resolve(getState).then((value: any) => { //IteratorResult<T>
+              if (value && value.done) {
+                i = i-1;
+              }
+            })
 
             worker = Scheduler.#instance!.workers!.peek(i);
 
@@ -141,10 +147,10 @@ export default class Scheduler<T> {
               let now2 = new Date().getTime();
 
               while (new Date().getTime() < now2 + this.timeout(worker[0])) {
-                this.updateState(worker[1], "run");
+                getState = this.updateState(worker[1], "run");
               }
 
-              this.updateState(worker[1], "waiting");
+              getState = this.updateState(worker[1], "waiting");
             }
           }
 
