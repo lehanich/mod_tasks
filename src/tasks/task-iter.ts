@@ -15,18 +15,17 @@ export default class TaskIter<T> implements TaskAdapter<T> {
   start(resolve: Function, reject: Function) {
     this.#worker = this.iter(resolve, reject);
     let status = this.#worker!.next();
-    status = this.#worker!.next("run");
-
-    if (status.done) {
-      resolve();
-    }
+    // status = this.#worker!.next("run");
+    // console.log("STATUS", status)
+    // if (status.done) {
+    //   resolve();
+    // }
   }
 
   *iter(resolve: Function, reject: Function): Generator<unknown,any,unknown> { // <T, any, unknown>
     let status;
     let cursor = this.#iterable![Symbol.iterator]();
     let i = 0;
-    // console.log("start iter")
 
     while (true) {
       if (status === "run") {
@@ -34,7 +33,7 @@ export default class TaskIter<T> implements TaskAdapter<T> {
 
         if (item.done) {
           this.deleteWorker();
-          resolve();
+          resolve({ done: true });
 
           return { done:true };
         }
