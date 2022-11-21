@@ -4,12 +4,12 @@ import { Priority,
 
 export default class PriorityQ<T> implements StrategyAdapter {
   #maxSize: number = 100;
-  #queueArray: WorkerContainer[] = new Array(100);
+  #queue: WorkerContainer[] = new Array(100);
   #length: number = 0;
 
   constructor(size: number) {
     this.#maxSize = size;
-    this.#queueArray = new Array(size);
+    this.#queue = new Array(size);
     this.#length = 0;
   }
 
@@ -20,29 +20,29 @@ export default class PriorityQ<T> implements StrategyAdapter {
     this.doubleQueue()
 
     if (this.#length === 0) {
-      this.#queueArray[0] = item;
+      this.#queue[0] = item;
     } else {
       switch(priority) {
         case "low":
-          this.#queueArray[this.#length] = item
+          this.#queue[this.#length] = item
           break;
 
         case "normal":
           let insert = Math.floor(this.#length / 2)
 
           for (j=this.#length - 1; j >= insert; j--) {
-            this.#queueArray[j+1] = this.#queueArray[j]
+            this.#queue[j+1] = this.#queue[j]
           }
 
-          this.#queueArray[insert] = item;
+          this.#queue[insert] = item;
           break;
 
         case "height":
           for (j=this.#length - 1; j >= 0; j--) {
-            this.#queueArray[j+1] = this.#queueArray[j]
+            this.#queue[j+1] = this.#queue[j]
           }
 
-          this.#queueArray[0] = item;
+          this.#queue[0] = item;
           break;
         default: 
 
@@ -56,7 +56,7 @@ export default class PriorityQ<T> implements StrategyAdapter {
     let i = 0;
     let array = new Array(this.#maxSize)
 
-    for (let worker of this.#queueArray) {
+    for (let worker of this.#queue) {
       if (i>= this.#length) {
         break;
       }
@@ -71,19 +71,19 @@ export default class PriorityQ<T> implements StrategyAdapter {
       }
     }
 
-    this.#queueArray = array
+    this.#queue = array
   }
 
   peekMin() {
-    return this.#queueArray[this.#length - 1]
+    return this.#queue[this.#length - 1]
   }
 
   peekMax() {
-    return this.#queueArray[0]
+    return this.#queue[0]
   }
 
   peek(i: number) {
-    return this.#queueArray[i]
+    return this.#queue[i]
   }
 
   isEmpty() {
@@ -101,15 +101,18 @@ export default class PriorityQ<T> implements StrategyAdapter {
       return undefined;
     }
 
-    item = <WorkerContainer>this.#queueArray.shift();
+    item = <WorkerContainer>this.#queue[0];
     this.#length--;
+    for (let i=0; i < this.#queue.length - 1; i++) {
+      this.#queue[i] = this.#queue[i + 1];
+    }
 
     return item;
   }
 
   push(item: WorkerContainer) {
     this.doubleQueue();
-    this.#queueArray[this.#queueArray.length] = item;
+    this.#queue[this.#length] = item;
     this.#length++;
   }
 
@@ -118,10 +121,11 @@ export default class PriorityQ<T> implements StrategyAdapter {
       this.#maxSize = this.#maxSize * 2;
       let array = new Array(this.#maxSize);
 
-      for (let item of this.#queueArray) {
-        array.push(item);
+      for (let i=0; i < this.#queue.length; i++) {
+        array[i] = this.#queue[i];
       }
-      this.#queueArray = array;
+
+      this.#queue = array;
     }
   }
 
@@ -130,6 +134,6 @@ export default class PriorityQ<T> implements StrategyAdapter {
   }
 
   get queue() {
-    return this.#queueArray;
+    return this.#queue;
   }
 }
