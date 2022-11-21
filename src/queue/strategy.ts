@@ -22,6 +22,14 @@ export class Strategy<T> implements StrategyAdapter {
     return this.#strategy.peek(index);
   };
 
+  pop(): WorkerContainer {
+    return this.#strategy.pop();
+  }
+
+  push(item: WorkerContainer) {
+    return this.#strategy.push(item);
+  }
+
   get length(): number {
 
     return this.#strategy.length;

@@ -17,7 +17,9 @@ export default class PriorityQ<T> implements StrategyAdapter {
     let j: number;
     let item: WorkerContainer = [priority, value];
 
-    if (this.#length ===0) {
+    this.doubleQueue()
+
+    if (this.#length === 0) {
       this.#queueArray[0] = item;
     } else {
       switch(priority) {
@@ -87,6 +89,32 @@ export default class PriorityQ<T> implements StrategyAdapter {
 
   isFull() {
     return this.#length === this.#maxSize;
+  }
+
+  pop(): WorkerContainer {
+    let item: WorkerContainer = <WorkerContainer>this.#queueArray.shift();
+
+    this.#length--;
+
+    return item;
+  }
+
+  push(item: WorkerContainer) {
+    this.doubleQueue();
+    this.#queueArray[this.#queueArray.length] = item;
+    this.#length++;
+  }
+
+  doubleQueue() {
+    if (this.#length === this.#maxSize && this.#length > 0) {
+      this.#maxSize = this.#maxSize * 2;
+      let array = new Array(this.#maxSize);
+
+      for (let item of this.#queueArray) {
+        array.push(item);
+      }
+      this.#queueArray = array;
+    }
   }
 
   get length() {
