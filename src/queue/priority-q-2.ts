@@ -45,7 +45,7 @@ export default class PriorityQ2<T> implements StrategyAdapter {
   remove(delWorker: any): void {
     let findElem = this.#queue.findContainer(delWorker);
     // if (findElem) {
-    this.#queue.remove(findElem);
+    this.#queue.delete(findElem);
     // }
     this.#length--;
   }
