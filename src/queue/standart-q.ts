@@ -4,49 +4,58 @@ import { Priority,
 
 export default class StandartQ<T> implements StrategyAdapter {
   #maxSize?: number | null = 100;
-  #queueArray: WorkerContainer[] = new Array(100);
+  #queue: WorkerContainer[] = new Array(100);
   #length: number = 0;
 
   constructor(size?: number | null) {
     this.#maxSize = size;
-    this.#queueArray = [];
+    this.#queue = [];
     this.#length = 0;
   }
 
   insert(worker: any, priority: Priority): void {
     this.doubleQueue();
-    this.#queueArray.push([priority, worker]);
+    this.#queue.push([priority, worker]);
   };
 
   remove(delWorker: Worker): void {
     let i = 0;
     let array = []
 
-    for (let worker of this.#queueArray) {
+    for (let worker of this.#queue) {
       if (worker && worker[1] !== delWorker) {
         array.push(worker)
       }
       i++
     }
 
-    this.#queueArray = array
+    this.#queue = array
   };
 
   peek(index: number): WorkerContainer {
-    return this.#queueArray[index];
+    return this.#queue[index];
   };
 
-  pop(): WorkerContainer {
-    let item: WorkerContainer = <WorkerContainer>this.#queueArray.shift();
-
+  pop(): WorkerContainer | undefined {
+    let item: WorkerContainer;
+    
+    if (this.#length === 0) {
+      return undefined;
+    }
+    
+    item = <WorkerContainer>this.#queue[0];
     this.#length--;
+
+    for (let i=0; i < this.#queue.length - 1; i++) {
+      this.#queue[i] = this.#queue[i + 1];
+    }
 
     return item;
   }
 
   push(item: WorkerContainer) {
     this.doubleQueue();
-    this.#queueArray[this.#queueArray.length] = item;
+    this.#queue[this.#queue.length] = item;
     this.#length++;
   }
 
@@ -55,10 +64,11 @@ export default class StandartQ<T> implements StrategyAdapter {
       this.#maxSize = this.#maxSize * 2;
       let array = new Array(this.#maxSize);
 
-      for (let item of this.#queueArray) {
-        array.push(item);
+      for (let i=0; i < this.#queue.length; i++) {
+        array[i] = this.#queue[i];
       }
-      this.#queueArray = array;
+
+      this.#queue = array;
     }
   }
 
@@ -68,6 +78,6 @@ export default class StandartQ<T> implements StrategyAdapter {
   };
 
   get queue() {
-    return this.#queueArray;
+    return this.#queue;
   }
 }
