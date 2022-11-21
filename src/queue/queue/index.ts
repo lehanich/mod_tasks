@@ -9,55 +9,59 @@ import {
 import LinkedListNode from "./LinkedList/LinkedListNode";
 import {WorkerContainer} from "../../interface";
 
-export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
+export default class Queue<T> implements IQueue<T> {
   public maxSize: number = 10;
   public length: number = 0;
-  public head: ListNodeLink<T> = null;
-  public rear: ListNodeLink<T> = null;
+  protected queue: LinkedList<T> = new LinkedList<T>;
+  public first: ListNodeLink<T> = null;
+  public last: ListNodeLink<T> = null;
 
   constructor(maxSize: number) {
-    super();
     this.maxSize = maxSize;
-    this.head = null;
-    this.rear = null;
+    this.first = null;
+    this.last = null;
   }
 
   public push(value: T): void {
     if (this.length < this.maxSize) {
-      this.add(value)
+      this.queue.add(value)
 
-      if (!this.head) {
-        this.head = this.first;
+      if (!this.first) {
+        this.first = this.queue.first;
       }
       this.length++;
-      this.rear = this.last;
+      this.last = this.queue.last;
     }
   }
 
   public pop(): T {
-    if (!this.first) {
+    if (!this.queue.first) {
       throw new Error('Queue is empty');
       // return <T>"error";
     }
 
-    const value = this.first?.value;
-    const oldFirst = this.deleteFirst();
+    const value = this.queue.first?.value;
+    const oldFirst = this.queue.deleteFirst();
 
     this.length--;
-    this.head = this.first;
+    this.first = this.queue.first;
 
     return <T>value;
   }
 
+  insertFirst(value: T): void {
+    this.queue.insertFirst(value);
+  }
+
   inserMiddle(value: T): void {
-    let current: ListNodeLink<T> = this.first;
+    let current: ListNodeLink<T> = this.queue.first;
     const newItem = new LinkedListNode(value);
     let i = 0;
 
-    if (!this.first || !this.last) {
-      this.first = newItem;
-      this.last = newItem;
-      this.next = newItem;
+    if (!this.queue.first || !this.queue.last) {
+      this.queue.first = newItem;
+      this.queue.last = newItem;
+      this.queue.next = newItem;
       this.length++;
 
       return undefined
@@ -76,8 +80,12 @@ export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
     this.length++;
   }
 
+  find(key: T): ListNodeLink<T> {
+    return this.queue.find(key);
+  }
+
   findContainer(key: any): ListNodeLink<WorkerContainer> {
-    let current: ListNodeLink<WorkerContainer> = <ListNodeLink<WorkerContainer>>this.first;
+    let current: ListNodeLink<WorkerContainer> = <ListNodeLink<WorkerContainer>>this.queue.first;
 
     while (current?.value![1] !== key) {
       if (current?.next == null) {
@@ -90,8 +98,19 @@ export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
     return current
   }
 
-  remove(link: ListNodeLink<T>): void {
-    this.delete(link)
+  delete(link: ListNodeLink<T>): void {
+    this.queue.delete(link)
     this.length--;
+  }
+
+  *[Symbol.iterator](): Iterator<T> {
+    yield <T>this.first?.value;
+
+    let currentNode = this.first;
+
+    while (currentNode) {
+      currentNode = currentNode.next;
+      yield <T>currentNode?.value;
+    }
   }
 }

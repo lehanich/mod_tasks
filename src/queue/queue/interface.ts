@@ -7,8 +7,8 @@ import {
 export interface Queue<T> {
   maxSize: number;
   length: number;
-  head?: ListNodeLink<T>;
-  rear?: ListNodeLink<T>;
+  first?: ListNodeLink<T>;
+  last?: ListNodeLink<T>;
 
   push(value: ListNodeVal<T>): void;
   pop(): ListNodeVal<T>;

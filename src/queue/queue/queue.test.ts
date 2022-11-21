@@ -17,7 +17,7 @@ describe("Queue functions", function () {
   queue.push(12);
 
   it("Queue read first element without pop", () => {
-    expect(queue.head?.value === 10);
+    expect(queue.first?.value === 10);
   });
 
   it("Queue can pop first element", () => {
@@ -26,7 +26,7 @@ describe("Queue functions", function () {
   });
 
   it("first element changed to 11", () => {
-    expect(queue.head?.value === 11);
+    expect(queue.first?.value === 11);
   });
 
   it("Queue can pop first element", () => {
