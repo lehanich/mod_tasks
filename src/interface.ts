@@ -7,11 +7,11 @@ export type WorkerContainer = [Priority, Worker];
 export interface StrategyAdapter {
   insert(value: any, priority: Priority): void;
   remove(delWorker: Worker): void;
-  peek(index: number): WorkerContainer;
+  peek(index: number): WorkerContainer | undefined;
   pop(): WorkerContainer | undefined;
   push(item: WorkerContainer): void;
   get length(): number;
-  get queue(): WorkerContainer[];
+  get queue(): Iterable<WorkerContainer>;
 }
 
 export type ScheduleOptions<T> = {
@@ -27,7 +27,7 @@ export type ScheduleOptions<T> = {
 export type TaskType = "Promise" | "Iter" | undefined;
 export type TaskOptions<T> = {
   priority: Priority,
-  iterable: Iterable<T>,
+  iterable?: Iterable<T>,
   task: Function;
 }
 
