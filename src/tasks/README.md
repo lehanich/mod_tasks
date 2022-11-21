@@ -56,7 +56,7 @@ worker.start(resolve, reject);
 
 ### deleteWorker(): void;
 
-удаление себя из очереди задач
+удаление себя из очереди задач. Используйте метод планировщика this.#sheduler!.deleteWorker(this); (см пример task-iter.ts)
 
 ### type: "Promise" | "Iter" | undefined;
 
