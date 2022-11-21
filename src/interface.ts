@@ -8,7 +8,7 @@ export interface StrategyAdapter {
   insert(value: any, priority: Priority): void;
   remove(delWorker: Worker): void;
   peek(index: number): WorkerContainer;
-  pop(): WorkerContainer;
+  pop(): WorkerContainer | undefined;
   push(item: WorkerContainer): void;
   get length(): number;
   get queue(): WorkerContainer[];
