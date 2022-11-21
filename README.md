@@ -191,3 +191,7 @@ task2.then((result) => {
 ```
 
 # Расширение функционала:
+
+# ToDo
+
+Добавить Browser workers, node workers
