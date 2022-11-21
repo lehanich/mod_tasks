@@ -65,9 +65,12 @@ export default class PriorityQ<T> implements StrategyAdapter {
         array[i] = worker
         i++
       }
+
+      if (worker && worker[1] === delWorker) {
+        this.#length--;
+      }
     }
 
-    this.#length--;
     this.#queueArray = array
   }
 
@@ -91,9 +94,14 @@ export default class PriorityQ<T> implements StrategyAdapter {
     return this.#length === this.#maxSize;
   }
 
-  pop(): WorkerContainer {
-    let item: WorkerContainer = <WorkerContainer>this.#queueArray.shift();
+  pop(): WorkerContainer | undefined{
+    let item: WorkerContainer;
 
+    if (this.#length === 0) {
+      return undefined;
+    }
+
+    item = <WorkerContainer>this.#queueArray.shift();
     this.#length--;
 
     return item;

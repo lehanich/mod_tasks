@@ -22,7 +22,7 @@ export class Strategy<T> implements StrategyAdapter {
     return this.#strategy.peek(index);
   };
 
-  pop(): WorkerContainer {
+  pop(): WorkerContainer | undefined {
     return this.#strategy.pop();
   }
 
