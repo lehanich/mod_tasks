@@ -18,7 +18,7 @@ export class Strategy<T> implements StrategyAdapter {
     this.#strategy.remove(delWorker);
   };
 
-  peek(index: number): WorkerContainer {
+  peek(index: number): WorkerContainer | undefined {
     return this.#strategy.peek(index);
   };
 
