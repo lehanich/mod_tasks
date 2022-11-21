@@ -1,4 +1,4 @@
-import { Priority, ScheduleOptions } from "./interface";
+import { Priority, ScheduleOptions, WorkerContainer } from "./interface";
 import { Strategy } from "./queue/strategy";
 
 export default class Scheduler<T> {
@@ -9,8 +9,6 @@ export default class Scheduler<T> {
   static #instance: Scheduler<unknown>;
   cursor?: Generator<T>;
   status?: string = "pending";
-
-  // static queueType: any;
 
   constructor (worker: any, options: ScheduleOptions<T>) {
     if (Scheduler.#instance == null) {
@@ -79,30 +77,32 @@ export default class Scheduler<T> {
   *executePromise(): Generator {
     let now = new Date().getTime();
     let status: any
-    let array: any[] = [];
-    let j = this.#options!.concurent;
-    
-    while (Scheduler.#instance!.workers!.length > 0) {
-      for (let i=0; i < Scheduler.#instance!.workers!.length; i++) {
-        if (j > 0) {
-            j--;
-            let worker = Scheduler.#instance!.workers!.peek(i);
-            let callback = () => this.updateState(worker[1], "run");
+    let array: Function[] = [];
+    let scheduler = Scheduler.#instance!;
 
+    while (scheduler.workers!.length > 0) {
+      for (let item of scheduler.workers!.queue) {
+        if (scheduler.workers!.length === 0) {
+          break;
+        }
+
+        if (array.length < this.#options!.concurent) {
+          let worker: WorkerContainer | undefined = scheduler.workers!.pop();
+          if (worker !== undefined) {
+            let callback = () => this.updateState(worker![1], "run");
             array.push(callback)
-        } // while (j!==0)
+          }
+        }
 
-        if (j==0 || i === Scheduler.#instance!.workers!.length - 1) {
-          j = this.#options.concurent;
-
+        if (array.length === this.#options!.concurent ||
+          scheduler.workers!.length === 0) {
           if (new Date().getTime() < now + this.#timeout) {
             setTimeout(() => {
               now = new Date().getTime();
 
               Promise.all(array.map((p) => p())).then((value) => {
                 array = [];
-                i = 0;
-                Scheduler.#instance!.cursor!.next("next tick");
+                scheduler.cursor!.next("next tick");
               });
             }, this.#delay);
           }
@@ -127,21 +127,21 @@ export default class Scheduler<T> {
     let now = new Date().getTime();
     let status: any;
     let getState: Promise<T>;
-    let worker: any;
+    let worker: WorkerContainer | undefined;
+    let scheduler = Scheduler.#instance!;
 
-    while (Scheduler.#instance!.workers!.length > 0) {
+    while (scheduler.workers!.length > 0) {
       if (new Date().getTime() > now + this.#timeout) {
         setTimeout(() => {
           now = new Date().getTime();
 
-          for (let i=0; i < Scheduler.#instance!.workers!.length; i++) {
-            Promise.resolve(getState).then((value: any) => { //IteratorResult<T>
-              if (value && value.done) {
-                i = i-1;
-              }
-            })
+          for (let item of scheduler.workers!.queue) {
+            if (scheduler.workers!.length === 0) {
+              break;
+            }
 
-            worker = Scheduler.#instance!.workers!.peek(i);
+            worker = scheduler.workers!.pop();
+            scheduler.workers!.push(<WorkerContainer>worker);
 
             if (worker) {
               let now2 = new Date().getTime();
@@ -154,7 +154,7 @@ export default class Scheduler<T> {
             }
           }
 
-          Scheduler.#instance!.cursor!.next();
+          scheduler.cursor!.next();
         }, this.#delay );
 
         status = yield "";
@@ -170,11 +170,6 @@ export default class Scheduler<T> {
     return worker.setState(state)
   }
 
-  // updateState2(worker: any,  state: any) {
-  //   return worker.setState(state)
-
-  // }
-
   static queue(strategy: Strategy<Priority>) {
     Scheduler.#instance.workers = strategy;
   }
@@ -189,7 +184,7 @@ export default class Scheduler<T> {
 
   start() {
     if (Scheduler.#instance!.cursor == null) {
-      // Scheduler.#instance!.cursor = Scheduler.#instance!.execute();
+
       if (this.#options!.type === "Promise") {
         Scheduler.#instance!.cursor = Scheduler.#instance!.executePromise();
       } else {
