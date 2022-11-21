@@ -192,6 +192,12 @@ task2.then((result) => {
 
 # Расширение функционала:
 
+Интерфейсы позволяют добавлять свою реализацию очереди и обработчики задач. 
+
+[Очереди](./src/queue/README.md)
+
+[Обработчики задачи](./src/tasks/README.md)
+
 # ToDo
 
 Добавить Browser workers, node workers
