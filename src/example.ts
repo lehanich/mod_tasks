@@ -1,6 +1,7 @@
 import addTask, { Scheduler,
   Strategy,
   PriorityQ,
+  PriorityQ2,
   Task,
   TaskIter,
   TaskPromise } from "./index";
@@ -9,7 +10,7 @@ Scheduler.init({
   timeout: 30,
   delay: 1000,
   concurent: 2
-}).queue(new Strategy(new PriorityQ(100)));
+}).queue(new Strategy(new PriorityQ2(100)));
 
 console.log("start")
 
