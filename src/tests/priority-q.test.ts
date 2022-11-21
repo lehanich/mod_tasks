@@ -30,4 +30,28 @@ describe("Priority Queue", function () {
 
     expect( priorityQ.length === 2 && priorityQ.peek(0)[1] === 1);
   });
+
+  it("Push at the end of queue", () => {
+    let priorityQ = new PriorityQ(100);
+
+    priorityQ.push(["height", 3]);
+    priorityQ.push(["low", 2]);
+    priorityQ.push(["normal", 1]);
+
+    expect( priorityQ.length === 3 && priorityQ.peek(0)[1] === 3
+      && priorityQ.peek(1)[1] === 2 && priorityQ.peek(2)[1] === 1);
+  });
+
+  it("Pop first element from queue", () => {
+    let priorityQ = new PriorityQ(100);
+
+    priorityQ.push(["height", 3]);
+    priorityQ.push(["low", 2]);
+    priorityQ.push(["normal", 1]);
+
+    let pop = priorityQ.pop();
+
+    expect( (pop === undefined || pop[1] === 3) &&
+    priorityQ.peek(0)[1] === 2);
+  });
 });

@@ -7,7 +7,7 @@ import addTask, { Scheduler,
   TaskIter,
   TaskPromise } from "../index";
 
-describe("Generator forEach", function () {
+describe("addTask TaskIter", function () {
     let total: number = 0;
     let date1: number, date2: number, date3: number;
 
@@ -17,7 +17,6 @@ describe("Generator forEach", function () {
       concurent: 3
     }).queue(new Strategy(new PriorityQ(100)));
 
-    // let total=0;
     const task1 = addTask(
       new Task(
         {
@@ -25,12 +24,6 @@ describe("Generator forEach", function () {
           iterable: new Array(1000),
           task: () => {
             total++
-            // console.log("start foreach")
-
-            // // for(let i=0; i<10;i++){
-            //   console.log(1, total++)
-            //   // setTimeout(() => console.log(i++), 1000)
-            // // }
           }
         },
         new TaskIter()
@@ -47,12 +40,6 @@ describe("Generator forEach", function () {
         iterable: new Array(10),
         task: () => {
           total++
-          // console.log("start foreach")
-
-          // // for(let i=0; i<10;i++){
-          //   console.log(2, total++)
-          //   // setTimeout(() => console.log(i++), 1000)
-          // // }
         }
       },  new TaskIter())
     );
@@ -67,12 +54,6 @@ describe("Generator forEach", function () {
         iterable: new Array(10),
         task: () => {
           total++
-          // console.log("start foreach")
-
-          // // for(let i=0; i<10;i++){
-          //   console.log(3, total++)
-          //   // setTimeout(() => console.log(i++), 1000)
-          // // }
         }
       }, new TaskIter())
     );
@@ -81,44 +62,124 @@ describe("Generator forEach", function () {
       date3 = new Date().getTime();
     });
 
-    // forEach(new Array(1000), () => {//new Array(10)
-    //   total++;
-    // }, { priority: "low" })
-    // .then(() => {
-    //   date1 = new Date().getTime();
-    // })
-    // .then(() => {
-    //   // expect(total === 3000 && date3 < date2 && date2 < date1)
-    // })
-    // .catch((err) => {
-    // });
-
-    // forEach(new Array(1000), () => {
-    //   total++;
-    // }, { priority: "normal" })
-    // .then(() => {
-    //   date2 = new Date().getTime();
-    // })
-    // .catch((err) => {
-    // });
-
-    // forEach(new Array(1000), () => {
-    //   total++;
-    // }, { priority: "height" })
-    // .then(() => {
-    //   date3 = new Date().getTime();
-    // })
-    // .catch((err) => {
-    // });
-
-  it("Function forEach goes throue huge iterable object without freeze ", () => {
-
+  it("Function addTask goes throue huge iterable object without freeze ", () => {
     expect(total === 3000)
   });
 
-  it("1st forEach has low priority, 2nd - normal, 3d - height. 3d ends earlier then others ", () => {
-
+  it("1st addTask has low priority, 2nd - normal, 3d - height. 3d ends earlier then others ", () => {
     expect(date3 < date2 && date2 < date1)
   });
+
+});
+
+describe("addTask TaskPromise", function () {
+  let total: number = 0;
+  let date1: number, date2: number, date3: number;
+
+  Scheduler.init({
+    timeout: 10,
+    delay: 100,
+    concurent: 3
+  }).queue(new Strategy(new PriorityQ(100)));
+
+  const task1 = addTask(
+    new Task(
+      {
+        priority: 'low',
+        task: () => {
+          total++
+        }
+      },
+      new TaskPromise()
+    )
+  );
+
+  task1.then((result) => {
+    date1 = new Date().getTime();
+  });
+
+  const task2 = addTask(
+    new Task({
+      priority: 'normal',
+      task: () => {
+        total++
+      }
+    },  new TaskPromise())
+  );
+
+  task2.then((result) => {
+    date2 = new Date().getTime();
+  });
+
+  const task3 = addTask(
+    new Task({
+      priority: 'height',
+      task: () => {
+        total++
+      }
+    }, new TaskPromise())
+  );
+
+  task3.then((result) => {
+    date3 = new Date().getTime();
+  });
+
+  it("Function addTask starts 3 times ", () => {
+    expect(total === 3)
+  });
+
+  it("1st addTask has low priority, 2nd - normal, 3d - height. 3d ends earlier then others ", () => {
+    expect(date3 < date2 && date2 < date1)
+  });
+
+});
+
+describe("addTask error", function () {
+  let total: number = 0;
+  let date1: number, date2: number, date3: number;
+
+  Scheduler.init({
+    timeout: 10,
+    delay: 100,
+    concurent: 3
+  }).queue(new Strategy(new PriorityQ(100)));
+
+  const task1 = addTask(
+    new Task(
+      {
+        priority: 'low',
+        iterable: new Array(1000),
+        task: () => {
+          total++
+        }
+      },
+      new TaskIter()
+    )
+  );
+
+  task1.then(() => {
+    date1 = new Date().getTime();
+  });
+
+  const t = () => {
+    const task2 = addTask(
+      new Task({
+        priority: 'normal',
+        iterable: new Array(10),
+        task: () => {
+          total++
+        }
+      },  new TaskPromise())
+    );
+
+    task2.then(() => {
+      date2 = new Date().getTime();
+    });
+  }
+
+  it("One Schedule can`t work with TaskPromise and TaskIter", () => {
+    expect(t).toThrow(Error);
+  });
+
 
 });
