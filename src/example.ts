@@ -6,8 +6,8 @@ import addTask, { Scheduler,
   TaskPromise } from "./index";
 
 Scheduler.init({
-  timeout: 10,
-  delay: 10000,
+  timeout: 30,
+  delay: 1000,
   concurent: 2
 }).queue(new Strategy(new PriorityQ(100)));
 
@@ -18,29 +18,29 @@ const task1 = addTask(
   new Task(
     {
       priority: 'height',
-      iterable: new Array(10),
+      iterable: new Array(100),
       task: () => { 
         console.log("start task 1")
         console.log(1, test++)
       }
     },
-    new TaskPromise()
+    new TaskIter()
   )
 );
 
-task1.then(() => {
-  console.log(2);
+task1.then((value) => {
+  console.log(2, value);
 });
 
 const task2 = addTask(
   new Task({
     priority: 'low',
-    iterable: new Array(10),
+    iterable: new Array(100),
     task: () => {
       console.log("start task 2")
       console.log(2, test++)
     }
-  },  new TaskPromise())
+  },  new TaskIter())
 );
 
 task2.then(() => {
@@ -50,12 +50,12 @@ task2.then(() => {
 const task3 = addTask(
   new Task({
     priority: 'normal',
-    iterable: new Array(10),
+    iterable: new Array(100),
     task: () => { 
       console.log("start task 3")
       console.log(3, test++)
     }
-  }, new TaskPromise())
+  }, new TaskIter())
 );
 
 task3.then(() => {
