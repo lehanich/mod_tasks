@@ -57,7 +57,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
       }
     }
 
-    return current
+    return current;
   }
 
   insertFirst(value: T): ILinkedList<T> {
@@ -99,7 +99,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
       return null;
     }
 
-    const deletedLast = this.last
+    const deletedLast = this.last;
 
     this.last =  this.last?.prev;
 

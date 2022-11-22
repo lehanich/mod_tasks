@@ -26,7 +26,7 @@ export default class Task<T> implements TaskAdapter<T> {
         // "костыль" одновременная работа задач Iter и Promise не поддерживается
       }
 
-      schedulerOptions.type =  this.type
+      schedulerOptions.type =  this.type;
     }
 
     if (("type" in schedulerOptions == false || !schedulerOptions.type) && this.type) {

@@ -24,7 +24,7 @@ export default class PriorityQ2<T> implements StrategyAdapter {
     } else {
       switch(priority) {
         case "low":
-          this.#queue.push(item)
+          this.#queue.push(item);
           break;
 
         case "normal":
@@ -56,10 +56,10 @@ export default class PriorityQ2<T> implements StrategyAdapter {
 
     while (i !== j) {
       current = current?.next;
-      j++
+      j++;
     };
 
-    return <WorkerContainer>current!.value
+    return <WorkerContainer>current!.value;
   }
 
   isEmpty() {
@@ -78,13 +78,13 @@ export default class PriorityQ2<T> implements StrategyAdapter {
     }
 
     this.#length--;
-    item = this.#queue.pop()
+    item = this.#queue.pop();
 
     return item;
   }
 
   push(item: WorkerContainer) {
-    this.#queue.push(item)
+    this.#queue.push(item);
     this.#length++;
   }
 

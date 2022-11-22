@@ -24,7 +24,7 @@ export default class Queue<T> implements IQueue<T> {
 
   public push(value: T): void {
     if (this.length < this.maxSize) {
-      this.queue.add(value)
+      this.queue.add(value);
 
       if (!this.first) {
         this.first = this.queue.first;
@@ -64,7 +64,7 @@ export default class Queue<T> implements IQueue<T> {
       this.queue.next = newItem;
       this.length++;
 
-      return undefined
+      return undefined;
     }
 
     while (i < Math.floor(this.length / 2)) {
@@ -95,7 +95,7 @@ export default class Queue<T> implements IQueue<T> {
       }
     }
 
-    return current
+    return current;
   }
 
   delete(link: ListNodeLink<T>): void {

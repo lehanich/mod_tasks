@@ -23,11 +23,11 @@ export default class Scheduler<T> {
     }
 
     if (options.timeout) {
-      Scheduler.#instance.#timeout = options.timeout
+      Scheduler.#instance.#timeout = options.timeout;
     }
 
     if (options.delay) {
-      Scheduler.#instance.#delay = options.delay
+      Scheduler.#instance.#delay = options.delay;
     }
 
     return <Scheduler<T>> Scheduler.#instance;
@@ -90,7 +90,7 @@ export default class Scheduler<T> {
           let worker: WorkerContainer | undefined = scheduler.workers!.pop();
           if (worker !== undefined) {
             let callback = () => this.updateState(worker![1], "run");
-            array.push(callback)
+            array.push(callback);
           }
         }
 

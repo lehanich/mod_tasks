@@ -12,7 +12,7 @@ Scheduler.init({
   concurent: 2
 }).queue(new Strategy(new PriorityQ2(100)));
 
-console.log("start")
+console.log("start");
 
 let test=0;
 const task1 = addTask(
@@ -21,8 +21,8 @@ const task1 = addTask(
       priority: 'height',
       iterable: new Array(100),
       task: () => { 
-        console.log("start task 1")
-        console.log(1, test++)
+        console.log("start task 1");
+        console.log(1, test++);
       }
     },
     new TaskIter()
@@ -38,8 +38,8 @@ const task2 = addTask(
     priority: 'low',
     iterable: new Array(100),
     task: () => {
-      console.log("start task 2")
-      console.log(2, test++)
+      console.log("start task 2");
+      console.log(2, test++);
     }
   },  new TaskIter())
 );

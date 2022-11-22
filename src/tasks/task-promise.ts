@@ -29,7 +29,7 @@ export default class TaskPromise<T> implements TaskAdapter<T> {
   }
 
   setState(state: string): Promise<unknown> {
-    return <Promise<unknown>>this.getTask(state)
+    return <Promise<unknown>>this.getTask(state);
   }
 
   deleteWorker() {
@@ -55,9 +55,9 @@ export default class TaskPromise<T> implements TaskAdapter<T> {
     }
 
     if (status === "resolved") {
-      resolve(status)
+      resolve(status);
     } else {
-      reject(status)
+      reject(status);
     }
   }
 
@@ -70,7 +70,7 @@ export default class TaskPromise<T> implements TaskAdapter<T> {
         resolve();
       }
     }).catch((e) => {
-      reject(e)
+      reject(e);
     })
   }
 

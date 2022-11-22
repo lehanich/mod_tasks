@@ -54,7 +54,7 @@ export default class PriorityQ<T> implements StrategyAdapter {
 
   remove(delWorker: T): void {
     let i = 0;
-    let array = new Array(this.#maxSize)
+    let array = new Array(this.#maxSize);
 
     for (let worker of this.#queue) {
       if (i>= this.#length) {
@@ -62,8 +62,8 @@ export default class PriorityQ<T> implements StrategyAdapter {
       }
 
       if (worker && worker != undefined && worker[1] !== delWorker) {
-        array[i] = worker
-        i++
+        array[i] = worker;
+        i++;
       }
 
       if (worker && worker[1] === delWorker) {
@@ -71,19 +71,19 @@ export default class PriorityQ<T> implements StrategyAdapter {
       }
     }
 
-    this.#queue = array
+    this.#queue = array;
   }
 
   peekMin() {
-    return this.#queue[this.#length - 1]
+    return this.#queue[this.#length - 1];
   }
 
   peekMax() {
-    return this.#queue[0]
+    return this.#queue[0];
   }
 
   peek(i: number) {
-    return this.#queue[i]
+    return this.#queue[i];
   }
 
   isEmpty() {

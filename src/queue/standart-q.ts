@@ -20,11 +20,11 @@ export default class StandartQ<T> implements StrategyAdapter {
 
   remove(delWorker: Worker): void {
     let i = 0;
-    let array = []
+    let array = [];
 
     for (let worker of this.#queue) {
       if (worker && worker[1] !== delWorker) {
-        array.push(worker)
+        array.push(worker);
       }
       i++
     }
