@@ -151,6 +151,7 @@ export default class Scheduler<T> {
               }
 
               getState = this.updateState(worker[1], "waiting");
+              // Promise.resolve(getState).then(() => console.log(get status)) // завершается вконце программы
             }
           }
 
